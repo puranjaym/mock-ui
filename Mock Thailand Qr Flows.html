@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI International Payments in Thailand - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .phone-frame {
+            border: 8px solid #1f2937;
+            border-radius: 40px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            background: #f9fafb;
+            position: relative;
+            overflow: hidden;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 25px;
+            background: #1f2937;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 10;
+        }
+        .pin-dot {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #9ca3af;
+            border: 1px solid #4b5563;
+        }
+        .pin-dot.filled {
+            background-color: #3b82f6;
+            border-color: #2563eb;
+        }
+        .keypad-btn {
+            transition: background-color 0.2s;
+        }
+        .keypad-btn:active {
+            background-color: #e5e7eb;
+        }
+        .scenario-btn.active {
+            background-color: #1d4ed8;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <div class="flex justify-center items-center gap-3">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256"><path fill="#0d47a1" d="M141.24 153.1a12 12 0 0 1-1.56 16.89a12 12 0 0 1-16.89-1.56l-32-32a12 12 0 0 1 0-16.89l32-32a12 12 0 0 1 18.45 15.33L116.49 128Z"/><path fill="#f57c00" d="M189.24 81.1a12 12 0 0 0-16.89-1.56L140.49 104L165.66 128l25.17-25.17a12 12 0 0 0-1.59-16.73Z"/><path fill="#0d47a1" d="M165.66 128a12 12 0 0 1-16.89 1.56l-11.51-11.5L162.43 92.9a12 12 0 1 1 18.11 15.69l-14.88 19.41Zm-16.89 1.56a12 12 0 0 0 0 16.88l32 32a12 12 0 0 0 16.89-1.56a12 12 0 0 0 1.56-16.89l-32-32a12 12 0 0 0-18.45 1.57Z"/><path fill="#0d47a1" d="M228 128a100 100 0 1 1-100-100a100 100 0 0 1 100 100Zm-12 0a88 88 0 1 0-88 88a88.1 88.1 0 0 0 88-88Z"/></svg>
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Tourist QR Payments in Thailand</h1>
+            </div>
+            <p class="mt-2 text-slate-600">An interactive demo of common payment scenarios.</p>
+        </header>
+
+        <!-- Scenario Selection -->
+        <div id="scenario-selector" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 max-w-4xl mx-auto">
+            <!-- Buttons will be injected here -->
+        </div>
+
+        <!-- Demonstration Area -->
+        <div id="demo-area" class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            
+            <!-- Merchant View -->
+            <div id="merchant-view" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg w-full max-w-md mx-auto">
+                <!-- Merchant content will be injected here -->
+            </div>
+
+            <!-- Customer Mobile View -->
+            <div id="customer-view" class="w-full max-w-sm mx-auto flex justify-center">
+                <div class="phone-frame w-[320px] h-[640px] md:w-[350px] md:h-[700px]">
+                    <div class="phone-notch"></div>
+                    <div id="phone-screen" class="w-full h-full p-2">
+                        <!-- Phone screen content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-12 text-sm text-slate-500">
+            <p>This is a mock demonstration. All names, amounts, and brands are for illustrative purposes only.</p>
+            <p class="mt-1">Exchange rate used for demo: 1 THB = 2.20 INR</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const scenarioSelector = document.getElementById('scenario-selector');
+        const merchantView = document.getElementById('merchant-view');
+        const phoneScreen = document.getElementById('phone-screen');
+
+        const FX_RATE = 2.20;
+
+        const scenarios = {
+            'static-upi': {
+                id: 'static-upi',
+                title: 'Static UPI QR',
+                description: 'Scan a standard UPI QR. You enter the amount.',
+                merchantName: 'Chatuchak Weekend Market Stall',
+                merchantNameThai: 'ร้านค้าตลาดนัดจตุจักร',
+                amountTHB: 250,
+                isDynamic: false,
+                qrType: 'UPI',
+            },
+            'dynamic-upi': {
+                id: 'dynamic-upi',
+                title: 'Dynamic UPI QR',
+                description: 'Scan a UPI QR with the amount included.',
+                merchantName: 'Go-Ang Pratunam Chicken Rice',
+                merchantNameThai: 'โกอ่างข้าวมันไก่ประตูน้ำ',
+                amountTHB: 180,
+                isDynamic: true,
+                qrType: 'UPI',
+            },
+            'static-promptpay': {
+                id: 'static-promptpay',
+                title: 'Static PromptPay QR',
+                description: 'Scan a local PromptPay QR. You enter the amount.',
+                merchantName: '7-Eleven at Sukhumvit',
+                merchantNameThai: 'เซเว่นอีเลฟเว่น สุขุมวิท',
+                amountTHB: 95,
+                isDynamic: false,
+                qrType: 'PromptPay',
+            },
+            'dynamic-promptpay': {
+                id: 'dynamic-promptpay',
+                title: 'Dynamic PromptPay QR',
+                description: 'Scan a local PromptPay QR with the amount included.',
+                merchantName: 'ICONSIAM Food Court',
+                merchantNameThai: 'ฟู้ดคอร์ท ไอคอนสยาม',
+                amountTHB: 500,
+                isDynamic: true,
+                qrType: 'PromptPay',
+            },
+        };
+
+        let state = {
+            currentScenarioId: 'static-upi',
+            currentStep: 'home', // home, enterAmount, confirm, pin, processing, success
+            enteredAmount: '',
+            pin: '',
+        };
+
+        function setState(newState) {
+            state = { ...state, ...newState };
+            render();
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        function render() {
+            renderScenarioButtons();
+            renderMerchantView();
+            renderPhoneScreen();
+        }
+
+        function renderScenarioButtons() {
+            scenarioSelector.innerHTML = Object.values(scenarios).map(s => `
+                <button 
+                    onclick="selectScenario('${s.id}')"
+                    class="scenario-btn p-3 text-sm md:text-base text-center rounded-lg font-semibold transition ${state.currentScenarioId === s.id ? 'active bg-blue-600 text-white' : 'bg-white text-blue-600 hover:bg-blue-50 shadow'}"
+                >
+                    ${s.title}
+                    <p class="font-normal text-xs hidden md:block mt-1 ${state.currentScenarioId === s.id ? 'text-blue-200' : 'text-slate-500'}">${s.description}</p>
+                </button>
+            `).join('');
+        }
+        
+        function renderMerchantView() {
+            const scenario = scenarios[state.currentScenarioId];
+            const qrContent = scenario.isDynamic ? 
+                `Merchant: ${scenario.merchantName}, Amount: ${scenario.amountTHB} THB` : 
+                `Merchant: ${scenario.merchantName}`;
+            
+            merchantView.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-slate-800">${scenario.merchantName}</h2>
+                    <p class="text-slate-500 mb-4">${scenario.merchantNameThai}</p>
+                    <div class="bg-slate-100 p-4 rounded-lg inline-block">
+                        <!-- QR Code SVG -->
+                        <div class="bg-white p-2 rounded">${generateQR(qrContent, scenario.qrType)}</div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-lg font-medium">Please Scan to Pay</p>
+                        ${scenario.isDynamic ? `<p class="text-3xl font-bold text-blue-600 mt-2">${scenario.amountTHB.toLocaleString()} THB</p>`: ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPhoneScreen() {
+            const scenario = scenarios[state.currentScenarioId];
+            let content = '';
+            
+            const header = (title, showBack = false) => `
+                <div class="flex items-center p-3 bg-white border-b h-14">
+                    ${showBack ? `<svg onclick="goBack()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left cursor-pointer" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg>` : '<div class="w-6"></div>'}
+                    <h3 class="flex-1 text-center font-semibold text-slate-800">${title}</h3>
+                    <div class="w-6"></div>
+                </div>
+            `;
+            
+            const footer = (buttonText, onClickAction, disabled = false) => `
+                <div class="absolute bottom-0 left-0 right-0 p-4 bg-white border-t">
+                     <button onclick="${onClickAction}" class="w-full text-white font-bold py-3 px-4 rounded-lg transition ${disabled ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}" ${disabled ? 'disabled' : ''}>
+                        ${buttonText}
+                    </button>
+                </div>
+            `;
+
+            switch (state.currentStep) {
+                case 'home':
+                    content = `
+                        <div class="flex flex-col h-full bg-slate-100">
+                            <div class="p-4 bg-blue-700 text-white rounded-b-2xl">
+                                <p class="text-sm opacity-80">Good Morning!</p>
+                                <p class="text-xl font-semibold">Puranjay Mahapatra</p>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-center items-center p-4">
+                                <div class="text-center">
+                                    <button onclick="scanQR()" class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-qr-code-scan text-blue-600" viewBox="0 0 16 16"><path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0v-3Zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5ZM.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5Zm15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5ZM4 4h1v1H4V4Z"/><path d="M7 2H2v5h5V2ZM3 3h3v3H3V3Zm2 8H4v1h1v-1Z"/><path d="M7 9H2v5h5V9Zm-4 1h3v3H3v-3Zm8-6h1v1h-1V4Z"/><path d="M9 2h5v5H9V2Zm1 1v3h3V3h-3ZM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-1V9H8Zm-1 1H6v1h1v-1Z"/><path d="M12 9h2V8h-2v1Z"/></svg>
+                                        <span class="font-semibold">Scan any QR</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'enterAmount':
+                    content = `
+                        <div class="flex flex-col h-full bg-white">
+                            ${header('Send Money', true)}
+                            <div class="p-4 text-center">
+                                <p class="text-sm text-slate-500">Paying</p>
+                                <p class="font-semibold text-lg">${scenario.merchantName}</p>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center justify-center p-4">
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-4xl font-bold text-slate-400">฿</span>
+                                    <input 
+                                        type="text" 
+                                        readonly 
+                                        value="${state.enteredAmount || '0'}"
+                                        class="text-6xl font-bold text-center bg-transparent outline-none w-full pl-12"
+                                    >
+                                </div>
+                                <p class="text-slate-500 mt-2">≈ ₹ ${(parseFloat(state.enteredAmount || '0') * FX_RATE).toFixed(2)}</p>
+                            </div>
+                            ${footer('Proceed', 'confirmAmount()', !state.enteredAmount || parseFloat(state.enteredAmount) <= 0)}
+                        </div>
+                    `;
+                    break;
+                
+                case 'confirm':
+                    const amount = scenario.isDynamic ? scenario.amountTHB : parseFloat(state.enteredAmount);
+                    content = `
+                        <div class="flex flex-col h-full bg-slate-50">
+                            ${header('Confirm Payment', true)}
+                            <div class="flex-1 p-4">
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <div class="flex items-center pb-4 border-b">
+                                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
+                                            ${scenario.merchantName.charAt(0)}
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="font-semibold">${scenario.merchantName}</p>
+                                            <p class="text-sm text-slate-500">Merchant Payment</p>
+                                        </div>
+                                    </div>
+                                    <div class="py-4 text-center">
+                                        <p class="text-5xl font-bold">฿${amount.toLocaleString()}</p>
+                                        <p class="text-slate-500 mt-1">≈ ₹ ${(amount * FX_RATE).toFixed(2)}</p>
+                                    </div>
+                                    <div class="pt-4 border-t text-sm">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-slate-500">Debited from:</span>
+                                            <span class="font-semibold flex items-center gap-2">
+                                                <img src="https://placehold.co/20x20/2563eb/white?text=B" class="rounded-full" alt="Bank Logo"/>
+                                                Bank of India ****6754
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            ${footer('Confirm & Pay', 'goToPin()')}
+                        </div>
+                    `;
+                    break;
+
+                case 'pin':
+                    content = `
+                        <div class="flex flex-col h-full bg-white">
+                            ${header('Enter UPI PIN', true)}
+                            <div class="flex-1 flex flex-col justify-center items-center text-center p-4">
+                                <div class="flex gap-3 mb-8">
+                                    ${Array(6).fill(0).map((_, i) => `<div class="pin-dot ${i < state.pin.length ? 'filled' : ''}"></div>`).join('')}
+                                </div>
+                                <div class="grid grid-cols-3 gap-4 w-full max-w-xs">
+                                    ${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button class="keypad-btn text-2xl p-4 rounded-full" onclick="enterPinDigit('${n}')">${n}</button>`).join('')}
+                                    <div/>
+                                    <button class="keypad-btn text-2xl p-4 rounded-full" onclick="enterPinDigit('0')">0</button>
+                                    <button class="keypad-btn flex items-center justify-center p-4 rounded-full" onclick="deletePinDigit()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708L8.683 8.707l2.147 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/><path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                
+                case 'processing':
+                    content = `
+                        <div class="flex flex-col h-full items-center justify-center bg-slate-50 text-center p-4">
+                            <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+                            <p class="text-lg font-semibold">Processing Payment...</p>
+                            <p class="text-slate-500">Please wait, do not press back.</p>
+                        </div>
+                    `;
+                    break;
+                
+                case 'success':
+                    const finalAmount = scenario.isDynamic ? scenario.amountTHB : parseFloat(state.enteredAmount);
+                    content = `
+                        <div class="flex flex-col h-full items-center justify-center bg-white text-center p-4">
+                            <svg class="w-20 h-20 text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <h2 class="text-2xl font-bold">Payment Successful</h2>
+                            <p class="text-4xl font-bold my-4">฿${finalAmount.toLocaleString()}</p>
+                            <p class="text-slate-500 mb-6">Paid to ${scenario.merchantName}</p>
+                            <div class="text-left w-full max-w-xs bg-slate-50 p-3 rounded-lg text-sm">
+                                <p><strong>Transaction ID:</strong> 781623549021</p>
+                                <p><strong>Time:</strong> ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit'})}</p>
+                            </div>
+                            <button onclick="resetDemo()" class="mt-8 w-full max-w-xs bg-blue-600 text-white font-bold py-3 rounded-lg">Done</button>
+                        </div>
+                    `;
+                    break;
+            }
+            phoneScreen.innerHTML = content;
+        }
+
+        function generateQR(text, type) {
+            // This is a simplified visual representation, not a real QR code.
+            const isPromptPay = type === 'PromptPay';
+            const bgColor = isPromptPay ? 'bg-cyan-500' : 'bg-blue-600';
+            const iconPath = isPromptPay
+                ? `<path fill="white" d="M12.48 4.71h-.97a.48.48 0 0 0-.48.48v1.07a.48.48 0 0 0 .48.48h.97a1.07 1.07 0 0 1 1.07 1.07v.96a1.07 1.07 0 0 1-1.07 1.07h-2.5a.48.48 0 0 0-.48.48v1.07a.48.48 0 0 0 .48.48h2.47a2.6 2.6 0 0 0 2.6-2.6v-.96a2.6 2.6 0 0 0-2.6-2.6ZM9.03 8.35a.48.48 0 0 0 .48-.48V5.19a.48.48 0 0 0-.48-.48h-.97A2.6 2.6 0 0 0 5.46 7.3v.96a2.6 2.6 0 0 0 2.6 2.6h2.5a.48.48 0 0 0 .48-.48V9.31a.48.48 0 0 0-.48-.48h-2.5a1.07 1.07 0 0 1-1.07-1.07v-.96c0-.59.48-1.07 1.07-1.07h.97Z"/>`
+                : `<g fill="white"><path d="M10.14 7.07a.75.75 0 0 1-.22 1.06a.75.75 0 0 1-1.06-.22L7.22 5.56a.75.75 0 0 1 0-1.12l1.64-2.35a.75.75 0 1 1 1.28.9L8.86 4.44Z"/><path d="M13.78 12.44a.75.75 0 0 1 0 1.12l-1.64 2.35a.75.75 0 1 1-1.28-.9l1.28-1.83l-1.28-1.83a.75.75 0 1 1 1.28-.9Z"/><path d="m10.14 10.93l-1.28 1.83l-1.28-1.83a.75.75 0 1 0-1.28.9l1.64 2.35a.75.75 0 0 0 1.28 0l1.64-2.35a.75.75 0 1 0-1.28-.9Z"/><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20ZM3.5 12a8.5 8.5 0 1 1 17 0a8.5 8.5 0 0 1-17 0Z"/></g>`;
+
+            return `
+                <svg viewBox="0 0 100 100" class="w-48 h-48 md:w-56 md:h-56">
+                    <defs>
+                        <pattern id="p" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <rect width="100" height="100" fill="white"/>
+                            <rect x="0" y="0" width="5" height="5" fill="#1f2937"/>
+                            <rect x="5" y="5" width="5" height="5" fill="#1f2937"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100" height="100" fill="url(#p)"/>
+                    <rect x="25" y="25" width="50" height="50" class="${bgColor}" rx="8"/>
+                    <svg x="35" y="35" width="30" height="30" viewBox="0 0 18 18">${iconPath}</svg>
+                </svg>
+            `;
+        }
+
+        // --- EVENT HANDLERS ---
+        
+        function selectScenario(id) {
+            setState({ currentScenarioId: id, currentStep: 'home', pin: '', enteredAmount: '' });
+        }
+        
+        function resetDemo() {
+            setState({ currentStep: 'home', pin: '', enteredAmount: '' });
+        }
+
+        function goBack() {
+            if (state.currentStep === 'pin') setState({ currentStep: 'confirm', pin: '' });
+            else if (state.currentStep === 'confirm') {
+                const scenario = scenarios[state.currentScenarioId];
+                setState({ currentStep: scenario.isDynamic ? 'home' : 'enterAmount', pin: '' });
+            }
+            else if (state.currentStep === 'enterAmount') setState({ currentStep: 'home', enteredAmount: '' });
+            else resetDemo();
+        }
+
+        function scanQR() {
+            const scenario = scenarios[state.currentScenarioId];
+            setTimeout(() => {
+                if (scenario.isDynamic) {
+                    setState({ currentStep: 'confirm' });
+                } else {
+                    // Simulate amount entry for static QR
+                    setState({ enteredAmount: scenario.amountTHB.toString() });
+                    setState({ currentStep: 'enterAmount' });
+                }
+            }, 300); // simulate scan time
+        }
+
+        function confirmAmount() {
+            setState({ currentStep: 'confirm' });
+        }
+
+        function goToPin() {
+            setState({ currentStep: 'pin' });
+        }
+        
+        function enterPinDigit(digit) {
+            if (state.pin.length < 6) {
+                const newPin = state.pin + digit;
+                setState({ pin: newPin });
+
+                if (newPin.length === 6) {
+                    setTimeout(() => setState({ currentStep: 'processing' }), 200);
+                    setTimeout(() => setState({ currentStep: 'success' }), 2000); // simulate processing
+                }
+            }
+        }
+        
+        function deletePinDigit() {
+            setState({ pin: state.pin.slice(0, -1) });
+        }
+
+        // Initial render
+        render();
+
+    </script>
+
+</body>
+</html>
