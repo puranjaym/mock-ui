@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landbank Family Finance App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .screens-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .phone-mockup {
+            background: #fff;
+            border-radius: 40px;
+            padding: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 380px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+        }
+
+        .screen {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow-y: auto;
+            height: 720px;
+            position: relative;
+        }
+
+        .screen-header {
+            background: linear-gradient(135deg, #7AB244 0%, #6B9E3D 100%);
+            padding: 50px 24px 32px;
+            color: white;
+            position: relative;
+        }
+
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .powered-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .greeting {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            font-size: 16px;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .balance-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 20px;
+            margin: -15px 24px 0;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .balance-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #7AB244;
+            margin-bottom: 12px;
+        }
+
+        .balance-period {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 16px;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .screen-content {
+            padding: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .view-all {
+            font-size: 13px;
+            color: #7AB244;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .category-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: #7AB244;
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .category-amount {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .category-percent {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .transaction-category {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .transaction-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .api-badge {
+            display: inline-block;
+            background: #e8f5e0;
+            color: #7AB244;
+            font-size: 9px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .month-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .month-arrow {
+            cursor: pointer;
+            padding: 4px;
+            color: #7AB244;
+        }
+
+        .bar-chart {
+    display: flex;
+    /* align-items: flex-end;  <-- REMOVE THIS LINE */
+    justify-content: space-between; /* This is fine, but gap is doing more work */
+    height: 180px;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    justify-content: flex-end; /* <-- ADD THIS LINE */
+}
+
+.bar {
+  width: 90%;              /* FIX: Was 100%, now allows for centering */
+  max-width: 55px;         /* NEW: Good for responsiveness */
+  background: linear-gradient(to top, #7AB244, #8BC759);
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+  position: relative;
+  /* The inline style="height: 60%" from your HTML will work here */
+}
+
+.bar:hover {
+  background: linear-gradient(to top, #6B9E3D, #7AB244);
+}
+
+/* --- MISSING PIECE ADDED --- */
+.bar-amount {
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 10px 0; /* Adds some space at the top */
+  text-align: center;
+}
+
+/* You still need to style your label, e.g., "Week 1" */
+.bar-label {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
+
+     .bar-amount {
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  padding-top: 10px; /* Pushes the text down from the top edge */
+}
+
+        .insight-card {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #ff9800;
+        }
+
+        .insight-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .insight-text {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .insight-action {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .family-member-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7AB244 0%, #5a8231 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        .member-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .member-info p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .member-spending {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .spending-item {
+            text-align: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .spending-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: #7AB244;
+            margin-bottom: 4px;
+        }
+
+        .spending-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .btn-primary {
+            background: #7AB244;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6B9E3D;
+            transform: translateY(-1px);
+        }
+
+        .screen-label {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .connected-accounts {
+            background: #e8f5e0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .connected-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .account-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .account-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spending-trend {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .trend-arrow {
+            font-size: 18px;
+        }
+
+        .trend-up {
+            color: #dc3545;
+        }
+
+        .trend-down {
+            color: #28a745;
+        }
+
+        .trend-text {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff9800;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="screens-wrapper">
+            <!-- Screen 1: OFW Dashboard with Consent-Based Data -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-header">
+                            <div class="app-title">
+                                FamilyBudget
+                                <span class="powered-badge">Powered by LANDBANK API</span>
+                            </div>
+                            <div class="greeting">Hello, Roberto!</div>
+                            <div class="location">📍 Dubai, UAE</div>
+                        </div>
+                        
+                        <div class="balance-card">
+                            <div class="balance-label">Family Spending (October 2025)</div>
+                            <div class="balance-amount">₱48,750</div>
+                            <div class="balance-period">From your ₱65,000 remittance</div>
+                            <div class="quick-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" style="color: #7AB244;">75%</div>
+                                    <div class="stat-label">Used</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" style="color: #28a745;">₱16,250</div>
+                                    <div class="stat-label">Remaining</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" style="color: #ff9800;">23</div>
+                                    <div class="stat-label">Transactions</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="screen-content">
+                            <div class="connected-accounts">
+                                <div class="connected-title">🔗 Connected via Open Banking APIs</div>
+                                <div class="account-item">
+                                    <div class="account-icon">🏦</div>
+                                    <span>Landbank Savings - Maria dela Cruz</span>
+                                    <span class="api-badge">AISP</span>
+                                </div>
+                                <div class="account-item">
+                                    <div class="account-icon">💳</div>
+                                    <span>QR PH Transactions - Real-time</span>
+                                    <span class="api-badge">PISP</span>
+                                </div>
+                            </div>
+
+                            <div class="section-header">
+                                <div class="section-title">Spending by Category</div>
+                                <div class="view-all" onclick="showScreen2()">View All →</div>
+                            </div>
+
+                            <div class="category-grid">
+                                <div class="category-card">
+                                    <div class="category-icon" style="background: #fff3e0;">🍽️</div>
+                                    <div class="category-name">Groceries</div>
+                                    <div class="category-amount" style="color: #ff9800;">₱18,500</div>
+                                    <div class="category-percent">38% of total</div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" style="background: #e3f2fd;">📚</div>
+                                    <div class="category-name">Education</div>
+                                    <div class="category-amount" style="color: #2196f3;">₱12,000</div>
+                                    <div class="category-percent">25% of total</div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" style="background: #fce4ec;">⚡</div>
+                                    <div class="category-name">Utilities</div>
+                                    <div class="category-amount" style="color: #e91e63;">₱8,250</div>
+                                    <div class="category-percent">17% of total</div>
+                                </div>
+                                <div class="category-card">
+                                    <div class="category-icon" style="background: #f3e5f5;">🏥</div>
+                                    <div class="category-name">Healthcare</div>
+                                    <div class="category-amount" style="color: #9c27b0;">₱6,500</div>
+                                    <div class="category-percent">13% of total</div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card">
+                                <div class="insight-icon">💡</div>
+                                <div class="insight-title">AI Insight: Budget Alert</div>
+                                <div class="insight-text">Grocery spending is 15% higher than last month. Your family visited SM Market 8 times vs usual 5 times.</div>
+                                <button class="insight-action" onclick="showScreen2()">View Details</button>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="showScreen2()">See Detailed Breakdown →</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Screen 1: OFW Dashboard - Consent-Based Family Spending</div>
+            </div>
+
+            <!-- Screen 2: Transaction History with Auto-Categorization -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-header">
+                            <div class="app-title">
+                                FamilyBudget
+                                <span class="powered-badge">AISP + PISP Enabled</span>
+                            </div>
+                            <div class="greeting">Transaction History</div>
+                            <div class="location">Auto-categorized via QR PH data</div>
+                        </div>
+
+                        <div class="screen-content" style="padding-top: 24px;">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <div class="chart-title">Weekly Spending Trend</div>
+                                    <div class="month-selector">
+                                        <span class="month-arrow">←</span>
+                                        <span>October</span>
+                                        <span class="month-arrow">→</span>
+                                    </div>
+                                </div>
+                                <div class="bar-chart">
+                                    <div class="bar-wrapper">
+                                        <div class="bar" style="height: 20%;">
+                                            <div class="bar-amount">₱8.2K</div>
+                                        </div>
+                                        <div class="bar-label">Week 1</div>
+                                    </div>
+                                    <div class="bar-wrapper">
+                                        <div class="bar" style="height: 45%;">
+                                            <div class="bar-amount">₱10.5K</div>
+                                        </div>
+                                        <div class="bar-label">Week 2</div>
+                                    </div>
+                                    <div class="bar-wrapper">
+                                        <div class="bar" style="height: 80%;">
+                                            <div class="bar-amount">₱14.8K</div>
+                                        </div>
+                                        <div class="bar-label">Week 3</div>
+                                    </div>
+                                    <div class="bar-wrapper">
+                                        <div class="bar" style="height: 60%;">
+                                            <div class="bar-amount">₱12.3K</div>
+                                        </div>
+                                        <div class="bar-label">Week 4</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-header">
+                                <div class="section-title">Recent Transactions</div>
+                                <div class="view-all">Filter</div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-icon" style="background: #fff3e0;">🛒</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">SM Supermarket</div>
+                                    <div class="transaction-category">
+                                        Groceries • Today, 10:30 AM
+                                        <span class="api-badge">QR PH</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">₱2,450</div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-icon" style="background: #e3f2fd;">📖</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">National Bookstore</div>
+                                    <div class="transaction-category">
+                                        Education • Yesterday, 3:15 PM
+                                        <span class="api-badge">QR PH</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">₱1,850</div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-icon" style="background: #fce4ec;">💧</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Maynilad Water</div>
+                                    <div class="transaction-category">
+                                        Utilities • Nov 3, 9:00 AM
+                                        <span class="api-badge">Bill Pay</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">₱1,200</div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-icon" style="background: #fff3e0;">🥘</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Puregold Jr.</div>
+                                    <div class="transaction-category">
+                                        Groceries • Nov 2, 6:45 PM
+                                        <span class="api-badge">QR PH</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">₱890</div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-icon" style="background: #f3e5f5;">💊</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Mercury Drug</div>
+                                    <div class="transaction-category">
+                                        Healthcare • Nov 1, 2:30 PM
+                                        <span class="api-badge">QR PH</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">₱3,200</div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-icon" style="background: #e8f5e9;">🏫</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">School Tuition Payment</div>
+                                    <div class="transaction-category">
+                                        Education • Oct 31, 8:00 AM
+                                        <span class="api-badge">Bank Transfer</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">₱8,500</div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="showScreen3()">View Family Member Breakdown →</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Screen 2: Auto-Categorized Transactions via PISP APIs</div>
+            </div>
+
+            <!-- Screen 3: Family Member Spending Insights -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-header">
+                            <div class="app-title">
+                                FamilyBudget
+                                <span class="powered-badge">AI-Powered Insights</span>
+                            </div>
+                            <div class="greeting">Family Members</div>
+                            <div class="location">Individual spending analysis</div>
+                        </div>
+
+                        <div class="screen-content" style="padding-top: 24px;">
+                            <div class="insight-card" style="background: linear-gradient(135deg, #e8f5e0 0%, #d4edda 100%); border-left-color: #28a745;">
+                                <div class="insight-icon">✅</div>
+                                <div class="insight-title">Good News, Roberto!</div>
+                                <div class="insight-text">Your family is staying within budget this month. Education and healthcare expenses are well-managed. Consider allocating ₱5,000 to savings.</div>
+                            </div>
+
+                            <div class="section-header">
+                                <div class="section-title">Spending by Person</div>
+                            </div>
+
+                            <div class="family-member-card">
+                                <div class="member-header">
+                                    <div class="member-avatar">MC</div>
+                                    <div class="member-info">
+                                        <h4>Maria dela Cruz</h4>
+                                        <p>Wife • Primary Account Holder</p>
+                                    </div>
+                                </div>
+                                <div class="member-spending">
+                                    <div class="spending-item">
+                                        <div class="spending-amount">₱32,500</div>
+                                        <div class="spending-label">Total Spent</div>
+                                    </div>
+                                    <div class="spending-item">
+                                        <div class="spending-amount">18</div>
+                                        <div class="spending-label">Transactions</div>
+                                    </div>
+                                    <div class="spending-item">
+                                        <div class="spending-amount">67%</div>
+                                        <div class="spending-label">Of Budget</div>
+                                    </div>
+                                </div>
+                                <div class="spending-trend">
+                                    <span class="trend-arrow trend-up">↑</span>
+                                    <span class="trend-text">8% higher than last month</span>
+                                </div>
+                            </div>
+
+                            <div class="family-member-card">
+                                <div class="member-header">
+                                    <div class="member-avatar" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">JD</div>
+                                    <div class="member-info">
+                                        <h4>Juan dela Cruz Jr.</h4>
+                                        <p>Son • Student (Grade 11)</p>
+                                    </div>
+                                </div>
+                                <div class="member-spending">
+                                    <div class="spending-item">
+                                        <div class="spending-amount">₱10,350</div>
+                                        <div class="spending-label">Total Spent</div>
+                                    </div>
+                                    <div class="spending-item">
+                                        <div class="spending-amount">4</div>
+                                        <div class="spending-label">Transactions</div>
+                                    </div>
+                                    <div class="spending-item">
+                                        <div class="spending-amount">21%</div>
+                                        <div class="spending-label">Of Budget</div>
+                                    </div>
+                                </div>
+                                <div class="spending-trend">
+                                    <span class="trend-arrow trend-down">↓</span>
+                                    <span class="trend-text">12% lower than last month</span>
+                                </div>
+                            </div>
+
+                            <div class="family-member-card">
+                                <div class="member-header">
+                                    <div class="member-avatar" style="background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);">AD</div>
+                                    <div class="member-info">
+                                        <h4>Ana dela Cruz</h4>
+                                        <p>Daughter • Student (Grade 7)</p>
+                                    </div>
+                                </div>
+                                <div class="member-spending">
+                                    <div class="spending-item">
+                                        <div class="spending-amount">₱5,900</div>
+                                        <div class="spending-label">Total Spent</div>
+                                    </div>
+                                    <div class="spending-item">
+                                        <div class="spending-amount">1</div>
+                                        <div class="spending-label">Transactions</div>
+                                    </div>
+                                    <div class="spending-item">
+                                        <div class="spending-amount">12%</div>
+                                        <div class="spending-label">Of Budget</div>
+                                    </div>
+                                </div>
+                                <div class="spending-trend">
+                                    <span class="trend-arrow" style="color: #666;">→</span>
+                                    <span class="trend-text">Same as last month</span>
+                                </div>
+                            </div>
+
+                            <div class="section-header" style="margin-top: 24px;">
+                                <div class="section-title">Top Categories by Person</div>
+                            </div>
+
+                            <div class="category-grid">
+                                <div class="category-card">
+                                    <div style="font-size: 11px; color: #666; margin-bottom: 8px;">MARIA</div>
+                                    <div class="category-icon" style="background: #fff3e0; width: 40px; height: 40px; font-size: 20px;">🛒</div>
+                                    <div class="category-name">Groceries</div>
+                                    <div class="category-amount" style="color: #ff9800; font-size: 16px;">₱18,500</div>
+                                </div>
+                                <div class="category-card">
+                                    <div style="font-size: 11px; color: #666; margin-bottom: 8px;">MARIA</div>
+                                    <div class="category-icon" style="background: #fce4ec; width: 40px; height: 40px; font-size: 20px;">⚡</div>
+                                    <div class="category-name">Bills</div>
+                                    <div class="category-amount" style="color: #e91e63; font-size: 16px;">₱8,250</div>
+                                </div>
+                                <div class="category-card">
+                                    <div style="font-size: 11px; color: #666; margin-bottom: 8px;">JUAN JR.</div>
+                                    <div class="category-icon" style="background: #e3f2fd; width: 40px; height: 40px; font-size: 20px;">📚</div>
+                                    <div class="category-name">School</div>
+                                    <div class="category-amount" style="color: #2196f3; font-size: 16px;">₱10,350</div>
+                                </div>
+                                <div class="category-card">
+                                    <div style="font-size: 11px; color: #666; margin-bottom: 8px;">ANA</div>
+                                    <div class="category-icon" style="background: #e3f2fd; width: 40px; height: 40px; font-size: 20px;">🏫</div>
+                                    <div class="category-name">Tuition</div>
+                                    <div class="category-amount" style="color: #2196f3; font-size: 16px;">₱5,900</div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left-color: #2196f3;">
+                                <div class="insight-icon">📊</div>
+                                <div class="insight-title">Powered by Open Banking</div>
+                                <div class="insight-text">All transactions automatically categorized using Landbank's AISP and PISP APIs. Real-time updates from QR PH payments ensure you always know how your remittances are being used.</div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="alert('Send message to family feature')">Send Message to Maria 💬</button>
+                            <button class="btn btn-primary" style="background: white; color: #7AB244; border: 2px solid #7AB244; margin-top: 8px;" onclick="alert('Export report feature')">Download Monthly Report 📥</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Screen 3: Family Member Insights & Open Banking Integration</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen1() {
+            alert('Navigation: Return to OFW Dashboard');
+        }
+
+        function showScreen2() {
+            alert('Navigation: View detailed transaction breakdown');
+        }
+
+        function showScreen3() {
+            alert('Navigation: View family member spending insights');
+        }
+    </script>
+</body>
+</html>
