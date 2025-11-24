@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landbank Phygital Banking Screens</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .screens-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .phone-mockup {
+            background: #fff;
+            border-radius: 40px;
+            padding: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 380px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+        }
+
+        .screen {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow-y: auto;
+            height: 720px;
+            position: relative;
+        }
+
+        .screen-header {
+            background: linear-gradient(135deg, #7AB244 0%, #6B9E3D 100%);
+            padding: 50px 24px 32px;
+            color: white;
+            position: relative;
+        }
+
+        .screen-title {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .screen-main-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .screen-subtitle {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .screen-content {
+            padding: 24px;
+        }
+
+        .customer-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7AB244 0%, #5a8231 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-right: 16px;
+        }
+
+        .customer-details h3 {
+            font-size: 18px;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .customer-details p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            border-color: #7AB244;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(122, 178, 68, 0.2);
+        }
+
+        .product-card.selected {
+            border-color: #7AB244;
+            background: #f0f7e8;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .product-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .recommended-badge {
+            background: #7AB244;
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .detail-item {
+            text-align: left;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #7AB244;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .btn-primary {
+            background: #7AB244;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6B9E3D;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(122, 178, 68, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #7AB244;
+            border: 2px solid #7AB244;
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #7AB244;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 40px auto 24px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .success-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .success-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 16px;
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #7AB244;
+        }
+
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .summary-value {
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .agent-info {
+            background: #f0f7e8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #7AB244;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        .agent-details p:first-child {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .agent-details p:last-child {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .screen-label {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .risk-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #28a745;
+        }
+
+        .risk-text {
+            font-size: 12px;
+            color: #28a745;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="screens-wrapper">
+            <!-- Screen 1: Customer Profile & Data Insights -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-header">
+                            <div class="screen-title">LANDBANK AGENT PORTAL</div>
+                            <div class="screen-main-title">Customer Profile</div>
+                            <div class="screen-subtitle">Maria's Sari-Sari Store • Quezon City</div>
+                        </div>
+                        <div class="screen-content">
+                            <div class="customer-card">
+                                <div class="customer-info">
+                                    <div class="avatar">JD</div>
+                                    <div class="customer-details">
+                                        <h3>Juan dela Cruz</h3>
+                                        <p>Farmer • Bulacan Province</p>
+                                        <div class="badge badge-success">Verified Customer</div>
+                                    </div>
+                                </div>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="info-label">Account Since</div>
+                                        <div class="info-value">Mar 2023</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Avg. Monthly Income</div>
+                                        <div class="info-value">₱25,000</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Credit Score</div>
+                                        <div class="info-value">720 - Good</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Active Loans</div>
+                                        <div class="info-value">0</div>
+                                    </div>
+                                </div>
+                                <div class="risk-indicator">
+                                    <div class="risk-dot"></div>
+                                    <div class="risk-text">Low Risk • Pre-approved</div>
+                                </div>
+                            </div>
+
+                            <div class="section-title">Financial History (AI Insights)</div>
+                            <div class="customer-card">
+                                <div class="product-subtitle" style="margin-bottom: 12px;">Transaction patterns from linked accounts</div>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="info-label">Monthly Agri Expenses</div>
+                                        <div class="info-value">₱8,500</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Bill Payment History</div>
+                                        <div class="info-value">100% On-time</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Savings Behavior</div>
+                                        <div class="info-value">Regular</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Harvest Season</div>
+                                        <div class="info-value">Nov-Dec</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="showScreen2()">View Recommended Products →</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Screen 1: Customer Data & Insights</div>
+            </div>
+
+            <!-- Screen 2: Product Recommendations -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen" id="screen2">
+                        <div class="screen-header">
+                            <div class="screen-title">RECOMMENDED FOR JUAN</div>
+                            <div class="screen-main-title">Loan Products</div>
+                            <div class="screen-subtitle">AI-powered recommendations based on profile</div>
+                        </div>
+                        <div class="screen-content">
+                            <div class="section-title">Best Match</div>
+                            
+                            <div class="product-card selected" onclick="selectProduct(this)">
+                                <div class="product-header">
+                                    <div>
+                                        <div class="product-title">Agri Input Financing</div>
+                                        <div class="product-subtitle">Seeds, fertilizers & equipment</div>
+                                    </div>
+                                    <div class="recommended-badge">BEST MATCH</div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Pre-approved Amount</div>
+                                        <div class="detail-value">₱50,000</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Interest Rate</div>
+                                        <div class="detail-value">8.5% p.a.</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Term</div>
+                                        <div class="detail-value">6 months</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-title" style="margin-top: 24px;">Other Options</div>
+
+                            <div class="product-card" onclick="selectProduct(this)">
+                                <div class="product-header">
+                                    <div>
+                                        <div class="product-title">Secured Credit Card</div>
+                                        <div class="product-subtitle">Build credit history</div>
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Credit Limit</div>
+                                        <div class="detail-value">₱20,000</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Deposit Required</div>
+                                        <div class="detail-value">₱10,000</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Annual Fee</div>
+                                        <div class="detail-value">₱500</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card" onclick="selectProduct(this)">
+                                <div class="product-header">
+                                    <div>
+                                        <div class="product-title">MSME Working Capital</div>
+                                        <div class="product-subtitle">General business use</div>
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Available Amount</div>
+                                        <div class="detail-value">₱100,000</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Interest Rate</div>
+                                        <div class="detail-value">12% p.a.</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Term</div>
+                                        <div class="detail-value">12 months</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="showScreen3()">Process Selected Loan →</button>
+                            <button class="btn btn-secondary" onclick="showScreen1()">← Back to Profile</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Screen 2: AI-Powered Product Recommendations</div>
+            </div>
+
+            <!-- Screen 3: Loan Disbursement Confirmation -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen" id="screen3">
+                        <div class="screen-header">
+                            <div class="screen-title">LOAN PROCESSING</div>
+                            <div class="screen-main-title">Instant Approval</div>
+                            <div class="screen-subtitle">Complete disbursement at touchpoint</div>
+                        </div>
+                        <div class="screen-content">
+                            <div class="success-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+
+                            <div class="success-content">
+                                <div class="success-title">Loan Approved!</div>
+                                <div class="success-subtitle">Instant disbursal to Juan's account</div>
+                            </div>
+
+                            <div class="summary-card">
+                                <div class="summary-row">
+                                    <span class="summary-label">Product</span>
+                                    <span class="summary-value">Agri Input Financing</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Loan Amount</span>
+                                    <span class="summary-value">₱50,000</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Interest Rate</span>
+                                    <span class="summary-value">8.5% per annum</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Tenure</span>
+                                    <span class="summary-value">6 months</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Monthly Payment</span>
+                                    <span class="summary-value">₱8,621</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">First Payment Due</span>
+                                    <span class="summary-value">Dec 5, 2025</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Total Disbursed</span>
+                                    <span class="summary-value">₱50,000</span>
+                                </div>
+                            </div>
+
+                            <div class="customer-card" style="background: #f0f7e8; border: 2px solid #7AB244;">
+                                <div class="product-subtitle" style="margin-bottom: 8px;">✓ Funds credited to account</div>
+                                <div class="product-title" style="color: #7AB244;">Juan dela Cruz - ****8374</div>
+                                <div class="product-subtitle">Transaction ID: LB2025110512349</div>
+                            </div>
+
+                            <div class="agent-info">
+                                <div class="agent-avatar">MS</div>
+                                <div class="agent-details">
+                                    <p>Processed by: Maria Santos</p>
+                                    <p>Maria's Sari-Sari Store • Agent ID: LB-QC-4782</p>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="showScreen1()">Process Another Customer</button>
+                            <button class="btn btn-secondary">Send Receipt via SMS</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Screen 3: Instant Loan Disbursal Confirmation</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectProduct(card) {
+            document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        }
+
+        function showScreen1() {
+            alert('Navigation: Return to Customer Profile screen');
+        }
+
+        function showScreen2() {
+            alert('Navigation: Moving to Product Recommendations screen');
+        }
+
+        function showScreen3() {
+            alert('Navigation: Processing loan and moving to confirmation screen');
+        }
+    </script>
+</body>
+</html>
