@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ms" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesejahteraan Kewangan Islamik - Pengurusan Kewangan Keluarga Patuh Syariah Malaysia</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tajawal', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #2a0a1a 0%, #1a0510 50%, #0a0305 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+            direction: ltr;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .app-header {
+            text-align: center;
+            color: #D4AF37;
+            margin-bottom: 40px;
+        }
+        .app-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #2E7D32 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .app-header p {
+            font-size: 16px;
+            color: rgba(212, 175, 55, 0.8);
+        }
+        .screens-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .phone-mockup {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 45px;
+            padding: 18px;
+            box-shadow: 0 25px 70px rgba(46, 125, 50, 0.4),
+                        0 0 100px rgba(212, 175, 55, 0.1);
+            max-width: 390px;
+            margin: 0 auto;
+            position: relative;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+        }
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+        .phone-mockup::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            margin-left: 50px;
+            border: 2px solid #2a2a2a;
+        }
+        .screen {
+            background: #ffffff;
+            border-radius: 30px;
+            overflow: hidden;
+            height: 760px;
+            position: relative;
+        }
+        .screen-scroll {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .screen-header {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            padding: 55px 24px 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .screen-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10 0 L15 5 L10 10 L5 5 Z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+            opacity: 0.6;
+        }
+        .header-content { position: relative; z-index: 1; }
+        .app-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+        .powered-badge {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #D4AF37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .greeting {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .location {
+            font-size: 15px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .balance-card {
+            background: rgba(255,255,255,0.98);
+            border-radius: 24px;
+            padding: 24px;
+            margin: -20px 24px 0;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 2px solid rgba(212, 175, 55, 0.1);
+        }
+        .balance-label { font-size: 13px; color: #666; margin-bottom: 8px; font-weight: 600; }
+        .balance-amount {
+            font-size: 40px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2E7D32 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        .balance-period { font-size: 12px; color: #999; margin-bottom: 16px; }
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 2px solid #f5f5f5;
+        }
+        .stat-value { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+        .stat-label { font-size: 11px; color: #666; font-weight: 600; }
+        .screen-content { padding: 24px; }
+        .family-ring-container { position: relative; width: 280px; height: 280px; margin: 0 auto 32px; }
+        .family-member {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .family-member:hover { transform: scale(1.1); }
+        .member-amount { font-size: 9px; font-weight: 600; margin-top: 2px; opacity: 0.9; }
+        .center-total {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border: 3px solid #f5f5f5;
+        }
+        .center-label { font-size: 11px; color: #666; margin-bottom: 4px; font-weight: 600; }
+        .center-amount { font-size: 20px; font-weight: 800; color: #2E7D32; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .section-title { font-size: 19px; font-weight: 800; color: #1a1a1a; }
+        .view-all { font-size: 13px; color: #2E7D32; font-weight: 700; cursor: pointer; }
+        .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+        .category-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 18px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .category-card:hover {
+            border-color: #2E7D32;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+        }
+        .category-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+        .category-name { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+        .category-amount { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .category-percent { font-size: 11px; color: #666; font-weight: 600; }
+        .halal-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            font-size: 9px;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+        .insight-banner {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #D4AF37;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+        .insight-icon { font-size: 28px; margin-bottom: 8px; }
+        .insight-text { font-size: 14px; color: #333; line-height: 1.6; font-weight: 600; }
+        .open-finance-badge {
+            background: linear-gradient(135deg, #005A6F 0%, #007A8C 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 90, 111, 0.3);
+        }
+        .compliance-gauge { width: 200px; height: 200px; margin: 32px auto; position: relative; }
+        .gauge-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#D4AF37 0deg, #D4AF37 313deg, #f0f0f0 313deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+        }
+        .gauge-inner {
+            width: 140px;
+            height: 140px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .gauge-value { font-size: 42px; font-weight: 800; color: #2E7D32; }
+        .gauge-label { font-size: 12px; color: #666; font-weight: 700; margin-top: 4px; }
+        .compliance-list {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .compliance-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .compliance-item:last-child { border-bottom: none; }
+        .compliance-icon { font-size: 24px; margin-right: 12px; }
+        .compliance-title { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+        .compliance-subtitle { font-size: 11px; color: #666; }
+        .zakat-card {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+            border-radius: 20px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
+        }
+        .zakat-label { font-size: 14px; font-weight: 700; margin-bottom: 8px; opacity: 0.95; }
+        .zakat-amount { font-size: 36px; font-weight: 800; margin-bottom: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .zakat-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .zakat-btn {
+            background: rgba(255,255,255,0.95);
+            color: #2E7D32;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .zakat-btn:hover { background: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .mindful-nudge {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border-left: 5px solid #28a745;
+        }
+        .nudge-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .nudge-text { font-size: 13px; color: #333; line-height: 1.5; margin-bottom: 12px; }
+        .nudge-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .partner-carousel {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        .partner-card {
+            min-width: 260px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .partner-card:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+        .partner-logo { font-size: 14px; font-weight: 800; color: #2E7D32; margin-bottom: 8px; }
+        .product-showcase {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px solid #dee2e6;
+        }
+        .product-name { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 8px; }
+        .product-price { font-size: 32px; font-weight: 800; color: #2E7D32; margin-bottom: 16px; }
+        .payment-plan {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+        .plan-title { font-size: 13px; color: #666; margin-bottom: 8px; font-weight: 700; }
+        .plan-amount { font-size: 24px; font-weight: 800; color: #D4AF37; }
+        .apply-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .apply-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4); }
+        .trust-indicators {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .fallback-nudge {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .fallback-text { font-size: 13px; color: #333; line-height: 1.5; font-weight: 600; margin-bottom: 12px; }
+        .fallback-highlight { font-size: 15px; font-weight: 800; color: #2E7D32; }
+        .screen-label {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #D4AF37;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <h1>🕌 Kesejahteraan Kewangan Islamik</h1>
+            <p>Pengurusan Kewangan Keluarga Patuh Syariah Malaysia</p>
+        </div>
+
+        <div class="screens-wrapper">
+            <!-- Skrin 1: Dashboard Perbelanjaan Keluarga -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-scroll">
+                            <div class="screen-header">
+                                <div class="header-content">
+                                    <div class="app-title">
+                                        <span>Kesejahteraan Kewangan Keluarga Anda</span>
+                                        <span class="powered-badge">Perbankan Terbuka</span>
+                                    </div>
+                                    <div class="greeting">Assalamualaikum, Ahmad</div>
+                                    <div class="location">📍 Kuala Lumpur, Malaysia</div>
+                                </div>
+                            </div>
+                          
+                            <div class="balance-card">
+                                <div class="balance-label">Jumlah Perbelanjaan Bulanan</div>
+                                <div class="balance-amount">RM 24,800</div>
+                                <div class="balance-period">November 2025</div>
+                                <div class="quick-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value" style="color: #28a745;">87%</div>
+                                        <div class="stat-label">Patuh Syariah</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value" style="color: #2E7D32;">42</div>
+                                        <div class="stat-label">Transaksi</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value" style="color: #D4AF37;">RM 482</div>
+                                        <div class="stat-label">Zakat Tertunggak</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="screen-content">
+                                <div class="open-finance-badge">
+                                    🔗 Disambung kepada 6 Bank Islam Malaysia melalui Perbankan Terbuka<br>
+                                    Connected to 6 Malaysian Islamic Banks via Open Banking
+                                </div>
+
+                                <div class="section-header">
+                                    <div class="section-title">Ahli Keluarga</div>
+                                </div>
+
+                                <div class="family-ring-container">
+                                    <div class="family-member" style="top: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);">
+                                        <div>Bapa</div>
+                                        <div class="member-amount">RM 8.2K</div>
+                                    </div>
+                                    <div class="family-member" style="top: 50%; right: 0; transform: translateY(-50%); background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);">
+                                        <div>Ibu</div>
+                                        <div class="member-amount">RM 6.5K</div>
+                                    </div>
+                                    <div class="family-member" style="bottom: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">
+                                        <div>Ahmad</div>
+                                        <div class="member-amount">RM 5.8K</div>
+                                    </div>
+                                    <div class="family-member" style="top: 50%; left: 0; transform: translateY(-50%); background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);">
+                                        <div>Aishah</div>
+                                        <div class="member-amount">RM 4.3K</div>
+                                    </div>
+                                    <div class="center-total">
+                                        <div class="center-label">Jumlah Keluarga</div>
+                                        <div class="center-amount">RM 24.8K</div>
+                                    </div>
+                                </div>
+
+                                <div class="section-header">
+                                    <div class="section-title">Perbelanjaan Mengikut Kategori</div>
+                                    <div class="view-all">Lihat Semua →</div>
+                                </div>
+
+                                <div class="category-grid">
+                                    <div class="category-card">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);">🛒</div>
+                                        <div class="category-name">
+                                            Makanan & Minuman
+                                            <span class="halal-badge">Halal ✓</span>
+                                        </div>
+                                        <div class="category-amount" style="color: #ff9800;">RM 6,200</div>
+                                        <div class="category-percent">25% daripada jumlah</div>
+                                    </div>
+                                    <div class="category-card">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">📚</div>
+                                        <div class="category-name">Pendidikan</div>
+                                        <div class="category-amount" style="color: #2196f3;">RM 5,100</div>
+                                        <div class="category-percent">21% daripada jumlah</div>
+                                    </div>
+                                    <div class="category-card">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);">🎭</div>
+                                        <div class="category-name">Hiburan & Rekreasi</div>
+                                        <div class="category-amount" style="color: #e91e63;">RM 4,300</div>
+                                        <div class="category-percent">17% daripada jumlah</div>
+                                    </div>
+                                    <div class="category-card">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);">💰</div>
+                                        <div class="category-name">Simpanan & Pelaburan</div>
+                                        <div class="category-amount" style="color: #28a745;">RM 3,200</div>
+                                        <div class="category-percent">13% daripada jumlah</div>
+                                    </div>
+                                </div>
+
+                                <div class="insight-banner">
+                                    <div class="insight-icon">✨</div>
+                                    <div class="insight-text">
+                                        Tahniah! Aishah mengurangkan perbelanjaan makan di luar sebanyak 32% bulan ini — perbelanjaan bijak yang hebat!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Skrin 1: Dashboard Perbelanjaan Keluarga</div>
+            </div>
+
+            <!-- Skrin 2: Pusat Zakat & Patuh Syariah -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-scroll">
+                            <div class="screen-header">
+                                <div class="header-content">
+                                    <div class="app-title">
+                                        <span>Patuh Syariah</span>
+                                        <span class="powered-badge">Disahkan SAC BNM</span>
+                                    </div>
+                                    <div class="greeting">Pusat Zakat & Patuh Syariah</div>
+                                    <div class="location">✅ Disahkan SAC Bank Negara Malaysia</div>
+                                </div>
+                            </div>
+
+                            <div class="screen-content" style="padding-top: 24px;">
+                                <div class="section-header">
+                                    <div class="section-title">Skor Patuh Syariah</div>
+                                </div>
+
+                                <div class="compliance-gauge">
+                                    <div class="gauge-circle">
+                                        <div class="gauge-inner">
+                                            <div class="gauge-value">87%</div>
+                                            <div class="gauge-label">Patuh</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="compliance-list">
+                                    <div class="compliance-item">
+                                        <div class="compliance-icon">✅</div>
+                                        <div class="compliance-details">
+                                            <div class="compliance-title">94% Pedagang Halal</div>
+                                            <div class="compliance-subtitle">Semua transaksi disahkan halal</div>
+                                        </div>
+                                    </div>
+                                    <div class="compliance-item">
+                                        <div class="compliance-icon">✅</div>
+                                        <div class="compliance-details">
+                                            <div class="compliance-title">100% Akaun Bebas Riba</div>
+                                            <div class="compliance-subtitle">Patuh Syariah Islam</div>
+                                        </div>
+                                    </div>
+                                    <div class="compliance-item">
+                                        <div class="compliance-icon">⚠️</div>
+                                        <div class="compliance-details">
+                                            <div class="compliance-title">3 Transaksi Perlu Semakan</div>
+                                            <div class="compliance-subtitle">Pinjaman kopi mengandungi faedah</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-header">
+                                    <div class="section-title">Kalkulator Zakat</div>
+                                </div>
+
+                                <div class="zakat-card">
+                                    <div class="zakat-label">Zakat Tertunggak Bulan Ini</div>
+                                    <div class="zakat-amount">RM 482</div>
+                                    <div class="zakat-actions">
+                                        <button class="zakat-btn">🕌 Dermakan ke Masjid Tempatan</button>
+                                        <button class="zakat-btn">📈 Pelaburan dalam Sukuk</button>
+                                    </div>
+                                </div>
+
+                                <div class="mindful-nudge">
+                                    <div class="nudge-title">💚 Tip Perbelanjaan Bijak</div>
+                                    <div class="nudge-text">
+                                        Gantikan RM 180/bulan perbelanjaan pawagam dengan sarapan keluarga di restoran halal?
+                                    </div>
+                                    <button class="nudge-btn">Teroka Alternatif Halal</button>
+                                </div>
+
+                                <div class="insight-banner">
+                                    <div class="insight-icon">📊</div>
+                                    <div class="insight-text">
+                                        Semua transaksi dianalisis mengikut standard SAC Bank Negara Malaysia. Semua bank rakan kongsi disahkan oleh Majlis Penasihat Syariah BNM.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Skrin 2: Pusat Zakat & Patuh Syariah</div>
+            </div>
+
+            <!-- Skrin 3: Beli Sekarang, Bayar Kemudian Patuh Syariah -->
+            <div>
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="screen-scroll">
+                            <div class="screen-header">
+                                <div class="header-content">
+                                    <div class="app-title">
+                                        <span>Pembiayaan Fleksibel Patuh Syariah</span>
+                                        <span class="powered-badge">0% Riba</span>
+                                    </div>
+                                    <div class="greeting">Beli Sekarang, Bayar Kemudian</div>
+                                    <div class="location">🤝 100% Patuh Syariah</div>
+                                </div>
+                            </div>
+
+                            <div class="screen-content" style="padding-top: 24px;">
+                                <div class="section-header">
+                                    <div class="section-title">Rakan Kongsi Disahkan</div>
+                                </div>
+
+                                <div class="partner-carousel">
+                                    <div class="partner-card">
+                                        <div class="partner-logo">EasiPay Islamik 🌙</div>
+                                        <div class="partner-tagline">0% Riba, 4 Bayaran</div>
+                                        <div class="partner-feature">✓ Disahkan SAC BNM</div>
+                                        <div class="partner-feature">✓ Tiada Yuran Tersembunyi</div>
+                                        <div class="partner-feature">✓ Kelulusan Segera</div>
+                                    </div>
+                                    <div class="partner-card">
+                                        <div class="partner-logo">FlexiSyariah ⭐</div>
+                                        <div class="partner-tagline">Disokong Sukuk Bank Islam</div>
+                                        <div class="partner-feature">✓ 100% Pembiayaan Islam</div>
+                                        <div class="partner-feature">✓ Tiada Faedah</div>
+                                        <div class="partner-feature">✓ Telus Sepenuhnya</div>
+                                    </div>
+                                    <div class="partner-card">
+                                        <div class="partner-logo">Tawfik Pay 🌟</div>
+                                        <div class="partner-tagline">Patuh Syariah BNM</div>
+                                        <div class="partner-feature">✓ Ansuran Fleksibel</div>
+                                        <div class="partner-feature">✓ Diluluskan Syariah</div>
+                                        <div class="partner-feature">✓ Sokongan 24/7</div>
+                                    </div>
+                                </div>
+
+                                <div class="section-header">
+                                    <div class="section-title">Produk Disyorkan</div>
+                                </div>
+
+                                <div class="product-showcase">
+                                    <div class="product-name">📱 Samsung Galaxy Z Fold6</div>
+                                    <div class="product-price">RM 6,799</div>
+                                    <div class="payment-plan">
+                                        <div class="plan-title">Pelan Bayaran Patuh Syariah (Tiada Riba)</div>
+                                        <div class="plan-amount">RM 1,133 × 6 Bulan</div>
+                                    </div>
+                                    <button class="apply-btn">Mohon dalam 30 Saat dengan MyKad</button>
+                                </div>
+
+                                <div class="trust-indicators">
+                                    <div class="trust-item">✅ Semua rakan disahkan SAC BNM</div>
+                                    <div class="trust-item">🛡️ Tiada yuran tersembunyi. Tiada riba. Selamanya.</div>
+                                    <div class="trust-item">🤝 100% Patuh Syariah</div>
+                                    <div class="trust-item">⚡ Kelulusan segera melalui Perbankan Terbuka</div>
+                                </div>
+
+                                <div class="fallback-nudge">
+                                    <div class="fallback-text">
+                                        💡 Atau simpan RM 1,133/bulan selama 6 bulan dan beli tunai
+                                    </div>
+                                    <div class="fallback-highlight">Dapat berkat ekstra! 🌟</div>
+                                </div>
+
+                                <div class="insight-banner">
+                                    <div class="insight-icon">🎯</div>
+                                    <div class="insight-text">
+                                        Semua pilihan pembiayaan disahkan oleh SAC Bank Negara Malaysia. Kami menjamin setiap transaksi bebas riba dan patuh syariah sepenuhnya.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-label">Skrin 3: Beli Sekarang, Bayar Kemudian Patuh Syariah</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
