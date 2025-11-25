@@ -175,21 +175,53 @@
             const qrContent = scenario.isDynamic ?
                 `Merchant: ${scenario.merchantName}, Amount: ${scenario.amountTHB} MYR` :
                 `Merchant: ${scenario.merchantName}`;
-           
-            merchantView.innerHTML = `
-                <div class="text-center">
-                    <h2 class="text-2xl font-bold text-slate-800">${scenario.merchantName}</h2>
-                    <p class="text-slate-500 mb-4">${scenario.merchantNameThai}</p>
-                    <div class="bg-slate-100 p-4 rounded-lg inline-block">
-                        <!-- QR Code SVG -->
-                        <div class="bg-white p-2 rounded">${generateQR(qrContent, scenario.qrType)}</div>
+            const isDuitNow = scenario.qrType === 'DuitNow';
+            if (isDuitNow) {
+                merchantView.classList.remove('bg-white');
+                merchantView.classList.add('bg-pink-500');
+                merchantView.innerHTML = `
+                    <div class="text-center text-white">
+                        <h2 class="text-xl font-bold uppercase mb-2" style="color: #fda4af;">fave Pay</h2>
+                        <h3 class="text-4xl font-bold mb-6">20% CASH BACK</h3>
+                        <div class="bg-white p-4 rounded-lg">
+                            <div class="flex justify-center items-center gap-2 mb-4">
+                                <svg class="w-6 h-6" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#ec4899" d="M12.48 4.71h-.97a.48.48 0 0 0-.48.48v1.07a.48.48 0 0 0 .48.48h.97a1.07 1.07 0 0 1 1.07 1.07v.96a1.07 1.07 0 0 1-1.07 1.07h-2.5a.48.48 0 0 0-.48.48v1.07a.48.48 0 0 0 .48.48h2.47a2.6 2.6 0 0 0 2.6-2.6v-.96a2.6 2.6 0 0 0-2.6-2.6ZM9.03 8.35a.48.48 0 0 0 .48-.48V5.19a.48.48 0 0 0-.48-.48h-.97A2.6 2.6 0 0 0 5.46 7.3v.96a2.6 2.6 0 0 0 2.6 2.6h2.5a.48.48 0 0 0 .48-.48V9.31a.48.48 0 0 0-.48-.48h-2.5a1.07 1.07 0 0 1-1.07-1.07v-.96c0-.59.48-1.07 1.07-1.07h.97Z"/>
+                                </svg>
+                                <p class="font-bold text-lg text-black">DuitNow QR</p>
+                            </div>
+                            <!-- QR Code SVG -->
+                            <div class="bg-white p-2 rounded mx-auto w-fit">${generateQR(qrContent, scenario.qrType)}</div>
+                            <p class="font-bold text-black mt-4">${scenario.merchantName}</p>
+                            ${scenario.isDynamic ? `<p class="text-3xl font-bold text-black mt-2">${scenario.amountTHB.toLocaleString()} MYR</p>` : ''}
+                            <p class="text-slate-600 mt-2">${scenario.merchantNameThai}</p>
+                        </div>
+                        <p class="mt-4 text-xl font-bold">MALAYSIA NATIONAL QR</p>
+                        <p class="text-sm">Accepted by participating Banks and e-Wallets Merchant Partner</p>
+                        <p class="mt-2 text-xl font-bold uppercase" style="color: #fda4af;">fave Pay</p>
+                        <div class="mt-4">
+                            <p class="text-lg font-medium">Please Scan to Pay</p>
+                        </div>
                     </div>
-                    <div class="mt-4">
-                        <p class="text-lg font-medium">Please Scan to Pay</p>
-                        ${scenario.isDynamic ? `<p class="text-3xl font-bold text-blue-600 mt-2">${scenario.amountTHB.toLocaleString()} MYR</p>`: ''}
+                `;
+            } else {
+                merchantView.classList.add('bg-white');
+                merchantView.classList.remove('bg-pink-500');
+                merchantView.innerHTML = `
+                    <div class="text-center">
+                        <h2 class="text-2xl font-bold text-slate-800">${scenario.merchantName}</h2>
+                        <p class="text-slate-500 mb-4">${scenario.merchantNameThai}</p>
+                        <div class="bg-slate-100 p-4 rounded-lg inline-block">
+                            <!-- QR Code SVG -->
+                            <div class="bg-white p-2 rounded">${generateQR(qrContent, scenario.qrType)}</div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-lg font-medium">Please Scan to Pay</p>
+                            ${scenario.isDynamic ? `<p class="text-3xl font-bold text-blue-600 mt-2">${scenario.amountTHB.toLocaleString()} MYR</p>`: ''}
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
         }
         function renderPhoneScreen() {
             const scenario = scenarios[state.currentScenarioId];
@@ -341,23 +373,26 @@
         }
         function generateQR(text, type) {
             // This is a simplified visual representation, not a real QR code.
-            const isPromptPay = type === 'DuitNow';
-            const bgColor = isPromptPay ? 'bg-pink-500' : 'bg-blue-600';
-            const iconPath = isPromptPay
+            const isDuitNow = type === 'DuitNow';
+            const moduleColor = isDuitNow ? '#fda4af' : '#1f2937';
+            const bgColor = isDuitNow ? 'bg-pink-500' : 'bg-blue-600';
+            const iconPath = isDuitNow
                 ? `<path fill="white" d="M12.48 4.71h-.97a.48.48 0 0 0-.48.48v1.07a.48.48 0 0 0 .48.48h.97a1.07 1.07 0 0 1 1.07 1.07v.96a1.07 1.07 0 0 1-1.07 1.07h-2.5a.48.48 0 0 0-.48.48v1.07a.48.48 0 0 0 .48.48h2.47a2.6 2.6 0 0 0 2.6-2.6v-.96a2.6 2.6 0 0 0-2.6-2.6ZM9.03 8.35a.48.48 0 0 0 .48-.48V5.19a.48.48 0 0 0-.48-.48h-.97A2.6 2.6 0 0 0 5.46 7.3v.96a2.6 2.6 0 0 0 2.6 2.6h2.5a.48.48 0 0 0 .48-.48V9.31a.48.48 0 0 0-.48-.48h-2.5a1.07 1.07 0 0 1-1.07-1.07v-.96c0-.59.48-1.07 1.07-1.07h.97Z"/>`
                 : `<g fill="white"><path d="M10.14 7.07a.75.75 0 0 1-.22 1.06a.75.75 0 0 1-1.06-.22L7.22 5.56a.75.75 0 0 1 0-1.12l1.64-2.35a.75.75 0 1 1 1.28.9L8.86 4.44Z"/><path d="M13.78 12.44a.75.75 0 0 1 0 1.12l-1.64 2.35a.75.75 0 1 1-1.28-.9l1.28-1.83l-1.28-1.83a.75.75 0 1 1 1.28-.9Z"/><path d="m10.14 10.93l-1.28 1.83l-1.28-1.83a.75.75 0 1 0-1.28.9l1.64 2.35a.75.75 0 0 0 1.28 0l1.64-2.35a.75.75 0 1 0-1.28-.9Z"/><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20ZM3.5 12a8.5 8.5 0 1 1 17 0a8.5 8.5 0 0 1-17 0Z"/></g>`;
             return `
                 <svg viewBox="0 0 100 100" class="w-48 h-48 md:w-56 md:h-56">
                     <defs>
                         <pattern id="p" width="10" height="10" patternUnits="userSpaceOnUse">
-                            <rect width="100" height="100" fill="white"/>
-                            <rect x="0" y="0" width="5" height="5" fill="#1f2937"/>
-                            <rect x="5" y="5" width="5" height="5" fill="#1f2937"/>
+                            <rect width="10" height="10" fill="white"/>
+                            <rect x="0" y="0" width="5" height="5" fill="${moduleColor}"/>
+                            <rect x="5" y="5" width="5" height="5" fill="${moduleColor}"/>
                         </pattern>
                     </defs>
                     <rect width="100" height="100" fill="url(#p)"/>
+                    ${!isDuitNow ? `
                     <rect x="25" y="25" width="50" height="50" class="${bgColor}" rx="8"/>
                     <svg x="35" y="35" width="30" height="30" viewBox="0 0 18 18">${iconPath}</svg>
+                    ` : ''}
                 </svg>
             `;
         }
