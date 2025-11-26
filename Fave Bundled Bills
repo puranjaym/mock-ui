@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bundled Bill Payments Mockup - Fave Malaysia</title>
+    <style> * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; } 
+    .phone-container { width: 375px; height: 812px; background: #000; border-radius: 25px; padding: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); position: relative; } 
+    .screen { width: 100%; height: 100%; background: #fff; border-radius: 18px; overflow: hidden; position: relative; display: none; } .screen.active { display: block; } .status-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; background: #E91E63; color: white; font-size: 14px; font-weight: 600; } .header { background: linear-gradient(135deg, #E91E63, #F06292); color: white; padding: 20px; text-align: center; position: relative; } .back-btn { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: none; border: none; color: white; font-size: 24px; cursor: pointer; } .header h1 { font-size: 20px; font-weight: 600; } .content { flex: 1; padding: 20px; overflow-y: auto; height: calc(100% - 140px); } .feature-card { background: linear-gradient(135deg, #FCE4EC, #F8BBD9); border-radius: 16px; padding: 24px; margin-bottom: 20px; text-align: center; } .feature-icon { width: 80px; height: 80px; background: #E91E63; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 36px; color: white; } .feature-title { font-size: 18px; font-weight: 600; color: #C2185B; margin-bottom: 8px; } .feature-desc { color: #880E4F; line-height: 1.4; } .btn-primary { background: linear-gradient(135deg, #E91E63, #F06292); color: white; border: none; padding: 16px 32px; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3); } .btn-secondary { background: white; color: #E91E63; border: 2px solid #E91E63; padding: 14px 32px; border-radius: 25px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; } .biller-item { display: flex; align-items: center; padding: 16px; background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .biller-logo { width: 48px; height: 48px; background: #E91E63; border-radius: 8px; margin-right: 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; } .biller-info { flex: 1; } .biller-name { font-weight: 600; color: #333; margin-bottom: 4px; } .biller-desc { color: #666; font-size: 14px; } .checkbox { width: 20px; height: 20px; border: 2px solid #E91E63; border-radius: 4px; position: relative; cursor: pointer; } .checkbox.checked::after { content: '✓'; position: absolute; top: -2px; left: 2px; color: #E91E63; font-weight: bold; } .bill-item { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .bill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; } .bill-amount { font-size: 18px; font-weight: 600; color: #E91E63; } .bill-status { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; } .status-overdue { background: #FFEBEE; color: #D32F2F; } .status-due { background: #FFF3E0; color: #F57C00; } .bundled-total { background: linear-gradient(135deg, #E91E63, #F06292); color: white; border-radius: 16px; padding: 24px; margin: 20px 0; text-align: center; } .total-label { font-size: 14px; opacity: 0.9; margin-bottom: 8px; } .total-amount { font-size: 28px; font-weight: 700; } .payment-method { display: flex; align-items: center; background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .bank-logo { width: 40px; height: 40px; background: #1976D2; border-radius: 8px; margin-right: 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; } .success-icon { width: 120px; height: 120px; background: #4CAF50; border-radius: 50%; margin: 40px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; color: white; } .success-message { text-align: center; margin-bottom: 30px; } .success-title { font-size: 24px; font-weight: 600; color: #333; margin-bottom: 12px; } .success-desc { color: #666; line-height: 1.4; } .transaction-details { background: #F8F9FA; border-radius: 12px; padding: 16px; margin-bottom: 20px; } .detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; } .detail-label { color: #666; } .detail-value { font-weight: 600; color: #333; } .navigation { display: flex; gap: 10px; background: rgba(233, 30, 99, 0.1); padding: 10px; border-radius: 20px; margin-top: 20px; } .nav-btn { padding: 8px 16px; border: none; border-radius: 15px; background: #E91E63; color: white; cursor: pointer; font-size: 12px; } .nav-btn.disabled { background: #ccc; cursor: not-allowed; } .loading { text-align: center; padding: 40px 20px; } .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #E91E63; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Screen 1: Feature Introduction -->
+        <div id="screen1" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <h1>Bundled Bill Payments</h1>
+            </div>
+            <div class="content">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Pay All Bills at Once</div>
+                    <div class="feature-desc">Link all your Malaysian bills and pay them together with a single JomPay transaction. Save time and never miss a payment!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">✨ Benefits</div>
+                    <div class="feature-desc">
+                        • One payment for all bills<br>
+                        • Set up AutoDebit for convenience<br>
+                        • Group bills by due date or biller<br>
+                        • Track all payments in one place
+                    </div>
+                </div>
+                <button class="btn-primary">Get Started</button>
+            </div>
+        </div>
+        <!-- Screen 2: Biller Selection -->
+        <div id="screen2" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>Link Your Bills</h1>
+            </div>
+            <div class="content">
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <div class="feature-title">Linking Process</div>
+                    <div class="feature-desc">We'll securely connect to your billers through PayNet to find your active accounts.</div>
+                </div>
+                <div>Select Billers to Link</div>
+                <div class="biller-item">
+                    <div class="biller-logo">TM</div>
+                    <div class="biller-info">
+                        <div class="biller-name">TM (Telekom Malaysia)</div>
+                        <div class="biller-desc">Unifi, Streamyx, Mobile</div>
+                    </div>
+                    <div class="checkbox checked"></div>
+                </div>
+                <div class="biller-item">
+                    <div class="biller-logo">TNB</div>
+                    <div class="biller-info">
+                        <div class="biller-name">TNB (Tenaga Nasional)</div>
+                        <div class="biller-desc">Electricity Bills</div>
+                    </div>
+                    <div class="checkbox checked"></div>
+                </div>
+                <div class="biller-item">
+                    <div class="biller-logo">AIR</div>
+                    <div class="biller-info">
+                        <div class="biller-name">Air Selangor</div>
+                        <div class="biller-desc">Water Bills</div>
+                    </div>
+                    <div class="checkbox checked"></div>
+                </div>
+                <div class="biller-item">
+                    <div class="biller-logo">ASTRO</div>
+                    <div class="biller-info">
+                        <div class="biller-name">Astro Malaysia</div>
+                        <div class="biller-desc">TV Subscription</div>
+                    </div>
+                    <div class="checkbox checked"></div>
+                </div>
+                <button class="btn-primary">Link Selected Billers</button>
+            </div>
+        </div>
+        <!-- Screen 3: Linking Process -->
+        <div id="screen3" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>Linking Your Bills</h1>
+            </div>
+            <div class="content">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div class="feature-title">Connecting to PayNet...</div>
+                    <div class="feature-desc">We're securely retrieving your account information from your selected billers. This may take a few moments.</div>
+                </div>
+                <div>Progress:</div>
+                <div class="bill-item">✅ TM - Account Found</div>
+                <div class="bill-item">✅ TNB - Account Found</div>
+                <div class="bill-item">⏳ Astro - Searching...</div>
+            </div>
+        </div>
+        <!-- Screen 4: Linked Bills Success -->
+        <div id="screen4" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>Bills Linked Successfully</h1>
+            </div>
+            <div class="content">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <div class="success-title">3 Bills Linked</div>
+                    <div class="success-desc">Your accounts have been securely connected</div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TM - Unifi Home</span>
+                        <span>Account: ***1234</span>
+                        <span>✓</span>
+                    </div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TNB Electricity</span>
+                        <span>Account: ***5678</span>
+                        <span>✓</span>
+                    </div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>Astro TV</span>
+                        <span>Account: ***9012</span>
+                        <span>✓</span>
+                    </div>
+                </div>
+                <button class="btn-primary">Set Up AutoDebit (Optional)</button>
+                <button class="btn-secondary">Skip for Now</button>
+            </div>
+        </div>
+        <!-- Screen 5: AutoDebit Setup -->
+        <div id="screen5" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>DuitNow AutoDebit</h1>
+            </div>
+            <div class="content">
+                <div class="feature-card">
+                    <div class="feature-icon">🏦</div>
+                    <div class="feature-title">Never Miss a Payment</div>
+                    <div class="feature-desc">Set up automatic payments for your bundled bills</div>
+                </div>
+                <div>Choose Your Bank</div>
+                <div class="biller-item">
+                    <div class="biller-logo">CIMB</div>
+                    <div class="biller-info">
+                        <div class="biller-name">CIMB Bank</div>
+                        <div class="biller-desc">Account: ***8901</div>
+                    </div>
+                    <div class="checkbox checked"></div>
+                </div>
+                <div class="biller-item">
+                    <div class="biller-logo">PB</div>
+                    <div class="biller-info">
+                        <div class="biller-name">Public Bank</div>
+                        <div class="biller-desc">Account: ***2345</div>
+                    </div>
+                    <div class="checkbox"></div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">ℹ️ How it works:</div>
+                    <div class="feature-desc">
+                        • Bills are automatically debited 1 day before due date<br>
+                        • You'll receive notifications before each payment<br>
+                        • You can cancel or modify anytime
+                    </div>
+                </div>
+                <button class="btn-primary">Set Up AutoDebit</button>
+                <button class="btn-secondary">Skip AutoDebit</button>
+            </div>
+        </div>
+        <!-- Screen 6: Bills Dashboard -->
+        <div id="screen6" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>My Bills</h1>
+            </div>
+            <div class="content">
+                <div>This Month's Bills ⚙️ Settings</div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TM - Unifi Home</span>
+                        <span class="bill-amount">RM 189.00</span>
+                    </div>
+                    <div>Due: 15 Sep 2025</div>
+                    <span class="bill-status status-due">Due in 10 days</span>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TNB Electricity</span>
+                        <span class="bill-amount">RM 245.67</span>
+                    </div>
+                    <div>Due: 18 Sep 2025</div>
+                    <span class="bill-status status-due">Due in 13 days</span>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>Astro TV</span>
+                        <span class="bill-amount">RM 98.90</span>
+                    </div>
+                    <div>Due: 20 Sep 2025</div>
+                    <span class="bill-status status-due">Due in 15 days</span>
+                </div>
+                <div class="bundled-total">
+                    <div class="total-label">Total Amount Due</div>
+                    <div class="total-amount">RM 533.57</div>
+                    <div class="total-label">3 bills • Due this month</div>
+                </div>
+                <button class="btn-primary">Pay All Bills Now</button>
+            </div>
+        </div>
+        <!-- Screen 7: Payment Confirmation -->
+        <div id="screen7" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>Payment Summary</h1>
+            </div>
+            <div class="content">
+                <div>Bills to Pay</div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TM - Unifi Home</span>
+                        <span class="bill-amount">RM 189.00</span>
+                    </div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TNB Electricity</span>
+                        <span class="bill-amount">RM 245.67</span>
+                    </div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>Astro TV</span>
+                        <span class="bill-amount">RM 98.90</span>
+                    </div>
+                </div>
+                <div class="bundled-total">
+                    <div class="total-label">Total Amount</div>
+                    <div class="total-amount">RM 533.57</div>
+                </div>
+                <div>Payment Method</div>
+                <div class="payment-method">
+                    <div class="bank-logo">CIMB</div>
+                    <div class="biller-info">
+                        <div class="biller-name">CIMB Bank</div>
+                        <div class="biller-desc">JomPay via DuitNow AutoDebit</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Secure Payment</div>
+                    <div class="feature-desc">Your payment will be processed securely through PayNet's JomPay system</div>
+                </div>
+                <button class="btn-primary">Confirm Payment - RM 533.57</button>
+            </div>
+        </div>
+        <!-- Screen 8: Processing Payment -->
+        <div id="screen8" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <h1>Processing Payment</h1>
+            </div>
+            <div class="content">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div class="feature-desc">Please wait while we process your bundled payment through JomPay. Do not close this app.</div>
+                </div>
+                <div>Payment Status:</div>
+                <div class="bill-item">✅ Bank authorization received</div>
+                <div class="bill-item">⏳ Transferring funds to PayNet...</div>
+                <div class="bill-item">⏱️ Settlement to billers (T+1)</div>
+            </div>
+        </div>
+        <!-- Screen 9: Payment Success -->
+        <div id="screen9" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <h1>Payment Successful</h1>
+            </div>
+            <div class="content">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <div class="success-title">Payment Complete!</div>
+                    <div class="success-desc">Your bundled payment has been successfully processed. All billers will be settled within 24 hours.</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Transaction ID</span>
+                        <span class="detail-value">JMP240905001234</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date & Time</span>
+                        <span class="detail-value">05 Sep 2025, 9:41 AM</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Total Amount</span>
+                        <span class="detail-value">RM 533.57</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Payment Method</span>
+                        <span class="detail-value">CIMB Bank (JomPay)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Bills Paid</span>
+                        <span class="detail-value">3 Bills</span>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <div class="feature-title">What's Next?</div>
+                    <div class="feature-desc">
+                        • Billers will be settled tomorrow (T+1)<br>
+                        • You'll receive confirmation notifications<br>
+                        • Receipt sent to your email
+                    </div>
+                </div>
+                <button class="btn-primary">View Bill Status</button>
+                <button class="btn-secondary">Download Receipt</button>
+            </div>
+        </div>
+        <!-- Screen 10: Settlement Status -->
+        <div id="screen10" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Fave</span>
+                <span>100%</span>
+            </div>
+            <div class="header">
+                <button class="back-btn">‹</button>
+                <h1>Settlement Status</h1>
+            </div>
+            <div class="content">
+                <div class="success-message">
+                    <div class="success-icon">🎉</div>
+                    <div class="success-title">All Bills Settled!</div>
+                    <div class="success-desc">T+1 settlement completed successfully</div>
+                </div>
+                <div>Settlement Details</div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TM - Unifi Home</span>
+                        <span class="bill-amount">RM 189.00 ✓ Settled</span>
+                    </div>
+                    <div>Settled: 06 Sep 2025, 10:30 AM</div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>TNB Electricity</span>
+                        <span class="bill-amount">RM 245.67 ✓ Settled</span>
+                    </div>
+                    <div>Settled: 06 Sep 2025, 10:45 AM</div>
+                </div>
+                <div class="bill-item">
+                    <div class="bill-header">
+                        <span>Astro TV</span>
+                        <span class="bill-amount">RM 98.90 ✓ Settled</span>
+                    </div>
+                    <div>Settled: 06 Sep 2025, 11:15 AM</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-title">Settlement Complete</div>
+                    <div class="feature-desc">All billers have confirmed receipt of funds. Your accounts are now updated as "Paid".</div>
+                </div>
+                <button class="btn-primary">Return to Bills Dashboard</button>
+            </div>
+        </div>
+    </div>
+    <div class="navigation">
+        <button class="nav-btn" onclick="showScreen(1)">1</button>
+        <button class="nav-btn" onclick="showScreen(2)">2</button>
+        <button class="nav-btn" onclick="showScreen(3)">3</button>
+        <button class="nav-btn" onclick="showScreen(4)">4</button>
+        <button class="nav-btn" onclick="showScreen(5)">5</button>
+        <button class="nav-btn" onclick="showScreen(6)">6</button>
+        <button class="nav-btn" onclick="showScreen(7)">7</button>
+        <button class="nav-btn" onclick="showScreen(8)">8</button>
+        <button class="nav-btn" onclick="showScreen(9)">9</button>
+        <button class="nav-btn" onclick="showScreen(10)">10</button>
+    </div>
+
+    <script>
+        function showScreen(n) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            document.getElementById('screen' + n).classList.add('active');
+            if (n === 3) {
+                setTimeout(() => showScreen(4), 3000);
+            }
+            if (n === 8) {
+                setTimeout(() => showScreen(9), 3000);
+            }
+        }
+        showScreen(1);
+    </script>
+</body>
+</html>
